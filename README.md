@@ -21,16 +21,16 @@ If multi threading is not done correctly, then unexpected results may pop up. Yo
 When errors, race conditions or otherwise bugs created by multi threading show up, it is often problematic to debug these. The application essentially runs in parallel. Unless this is all handled safely, something can go wrong. Specific issues, such as race conditions, don't throw any errors. As a result, figuring out where race conditions occur can be time and hair consuming.
 
 ## What is the component called where objects are stored in memory?
-The heap.
+The heap. Objects are created on the heap, and are alive as long as there's a pointer (reference) to this object. Because of this, object mutability can be achieved (which allows an object to be changed in one location, and it being updated in other locations instantly, because it's the same object).
 
 ### How does this differ in a multi threaded context?
-
+There is no difference to this in a multi threaded application. The heap stays as is. It is worth noting that different threads will point towards the same objects in the heap. As a result, different threads using the same object should be synchronised properly to prevent race conditions. Not doing so may result in unexpected results and difficult bugs to debug.
 
 ## What is the component called where methods and primitive types are stored in memory?
-The stack.
+The stack. It follows a first-in-last-out (FILO) approach. Every frame on the stack is one method, in which we have our primitive types. This is how values are separated in methods, and why primitives are immutable; because they are copies that live solely in the stack frames and not in the heap. When a new method is called, a new frame gets added on top of the stack. When the method exits, the frame is removed. Because it follows the FILO approach, the program knows how to backread to the prior methods of execution when one finishes.
 
 ### How does this differ in a multi threaded context?
-
+The difference is that a single threaded application will have one stack, whereas a multi threaded application has multiple stacks due to the fact that it does multiple executions in parallel. Without these multiple stacks, it's impossiible for the application to keep track of things.
 
 ## What is in this context a race condition?
 A race condition occurs where multiple threads (two or more) try to access the same shared object. In such situation, both threads may try to read, operate on, and write to the value. If this is done in parallel over multiple threads, without any synchronosation or locks, then this may end in unexpected results.
