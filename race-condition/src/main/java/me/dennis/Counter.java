@@ -12,11 +12,11 @@ public class Counter {
         return this.count;
     }
 
-    public void countUp() {
+    public /*synchronized*/ void countUp() {
         this.count++;
     }
 
-    public void countDown() {
+    public /*synchronized*/ void countDown() {
         this.count--;
     }
 }
