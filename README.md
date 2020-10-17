@@ -20,8 +20,25 @@ If multi threading is not done correctly, then unexpected results may pop up. Yo
 
 When errors, race conditions or otherwise bugs created by multi threading show up, it is often problematic to debug these. The application essentially runs in parallel. Unless this is all handled safely, something can go wrong. Specific issues, such as race conditions, don't throw any errors. As a result, figuring out where race conditions occur can be time and hair consuming.
 
-## Race condition
-In the race condition project, we see a very simple counter. This counter is a shared object, shared by two threads. Two different threads will increment and decrement the counter at the same time, unsafely. One counts up a million times, the other counts down a million times. If the threading was done safely, the outcome of the number should be zero. However, running the application we see a completely random number being outputted each time.
+## What is the component called where objects are stored in memory?
+The heap.
 
-## Password cracker
+### How does this differ in a multi threaded context?
+
+
+## What is the component called where methods and primitive types are stored in memory?
+The stack.
+
+### How does this differ in a multi threaded context?
+
+
+## What is in this context a race condition?
+A race condition occurs where multiple threads (two or more) try to access the same shared object. In such situation, both threads may try to read, operate on, and write to the value. If this is done in parallel over multiple threads, without any synchronosation or locks, then this may end in unexpected results.
+
+# Race condition
+In the race condition project, we see a very simple counter. This counter is a shared object, shared by two threads. Two different threads will increment and decrement the counter at the same time, unsafely. One counts up a million times, the other counts down a million times. If the threading was done safely, the outcome of the number should be zero. However, running the application we see a completely random number being outputted each time. I found the below image online which helps visualise this problem.
+
+![image](https://i.imgur.com/cY5fmtR.png)
+
+# Password cracker
 In this project, I built a small Golang based BCrypt password cracker. BCrypt is quite a heavy hashing algorithm, which means cracking passwords one by one in sequence will take a long time. In fact, testing on my desktop shows that comparing roughly 100 passwords takes roughly 19 seconds without any Go routines. After applying Go routines (100 by default), the processing time is dramatically dropped to just over one second while still comparing as many passwords as it did previously.
